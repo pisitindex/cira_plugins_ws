@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialogaffine_manual</class>
+ <widget class="QDialog" name="Dialogaffine_manual">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>184</width>
+    <height>97</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>affine_manual</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
