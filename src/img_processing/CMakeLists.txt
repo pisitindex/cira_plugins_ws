@@ -30,14 +30,64 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
+find_package(NodeEditor REQUIRED)
 
-find_package(OpenCV REQUIRED
-#NO_MODULE
-#PATHS /usr/local
-#NO_DEFAULT_PATH
-)
-include_directories(${OpenCV_INCLUDE_DIRS})
+if(UNIX AND NOT APPLE)
+        set(LINUX TRUE)
+endif()
 
+if(LINUX)
+    add_compile_options(-Wall -Wextra)
+
+    if(NOT RASP)
+        find_package(OpenCV 4 REQUIRED
+        NO_MODULE
+        PATHS /usr/local
+        NO_DEFAULT_PATH)
+    else()
+        find_package(OpenCV 4 REQUIRED)
+    endif()
+    include_directories(${OpenCV_INCLUDE_DIRS})
+
+    if(RASP)
+        add_definitions(-DRASP)
+    endif()
+
+    if(TERMUX)
+        add_definitions(-DTERMUX)
+        find_package(OpenCV 4 REQUIRED
+            NO_MODULE
+            PATHS /data/data/com.termux/files/home/cira_depend/opencv-4.6.0/install
+            NO_DEFAULT_PATH)
+        include_directories(${OpenCV_INCLUDE_DIRS})
+    elseif(RASP)
+        find_package(OpenCV 4 REQUIRED)
+        include_directories(${OpenCV_INCLUDE_DIRS})
+    endif()
+
+elseif(APPLE)
+    find_package(OpenCV REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+
+else()
+
+    add_definitions("/std:c++14")
+
+    find_package(OpenCV 4 REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    message(STATUS "*******************************************")
+    message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+    link_directories( /CiRA-CORE/install/x64/vc16/lib )
+    set(OpenCV_LIBRARIES
+        opencv_core460 opencv_videoio460
+        opencv_highgui460 opencv_imgproc460
+        opencv_imgcodecs460
+    )
+    message(STATUS "##################################OpenCV_LIBRARIES: ${OpenCV_LIBRARIES}")
+
+endif()
+
+set(qt_version qt511)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /opt/${qt_version})
 set(Qt5Core_DIR /opt/${qt_version}/lib/cmake/Qt5Core)
 set(Qt5Widgets_DIR /opt/${qt_version}/lib/cmake/Qt5Widgets)
@@ -83,11 +133,27 @@ add_library(${PROJECT_NAME}
     ${QT_MOC_HPP}
     )
 
-target_link_libraries(${PROJECT_NAME}
-    ${QT_LIBRARIES} ${catkin_LIBRARIES}
-    ${OpenCV_LIBS}
-    Qt5::Core Qt5::Widgets Qt5::Gui
-    )
+if(MSVC)
+  target_link_libraries(${PROJECT_NAME}
+        ${QT_LIBRARIES} ${catkin_LIBRARIES}
+        ${OpenCV_LIBS}
+        Qt5::Core Qt5::Widgets Qt5::Gui
+        NodeEditor::nodes
+  )
 
-install(TARGETS ${PROJECT_NAME}
-    LIBRARY DESTINATION $ENV{HOME}/CiRA_CORE_Plugins)
+  install(TARGETS ${PROJECT_NAME}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+  install(FILES ${CATKIN_DEVEL_PREFIX}/bin/${PROJECT_NAME}.dll
+        DESTINATION $ENV{HOMEPATH}/CiRA_CORE_Plugins)
+else()
+  target_link_libraries(${PROJECT_NAME}
+        ${QT_LIBRARIES} ${catkin_LIBRARIES}
+        ${OpenCV_LIBRARIES}
+        Qt5::Core Qt5::Widgets Qt5::Gui
+  )
+
+  install(TARGETS ${PROJECT_NAME}
+        LIBRARY DESTINATION $ENV{HOME}/CiRA_CORE_Plugins)
+endif()
+
+###################

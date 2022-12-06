@@ -32,7 +32,7 @@ void Dialogcamera_calibration::restoreState(QJsonObject param_js_data) {
 
 
 QString Dialogcamera_calibration::open_folder_dialog(){
-    QString select_folder = QFileDialog::getExistingDirectory(this, "Choose Folder", get_current_dir_name());
+    QString select_folder = QFileDialog::getExistingDirectory(this, "Choose Folder", QDir::homePath());
         if(!select_folder.isEmpty()) {
           tmp_folder = select_folder;
           qDebug() << tmp_folder;
