@@ -43,8 +43,13 @@ public:
   QJsonObject saveState();
   void restoreState(QJsonObject param_js_data);
 
+private slots:
+  void on_pushButton_path_to_file_clicked();
+
 private:
   Ui::Dialogundistort *ui;
+  QString browse_camera_calibration_matrix();
+
 };
 
 #endif // Dialogundistort_H

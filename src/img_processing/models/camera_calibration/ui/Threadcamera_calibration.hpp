@@ -12,7 +12,9 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
-
+#include <QFileDialog>
+#include <QDir>
+#include <typeinfo>
 
 class Threadcamera_calibration : public QThread
 {
@@ -98,7 +100,7 @@ public:
 
         i++;
       }
-
+      cv::destroyWindow("chessboard detection");
 
       cv::Matx33f K(cv::Matx33f::eye());  // intrinsic camera matrix
       cv::Vec<float, 5> k(0, 0, 0, 0, 0); // distortion coefficients
@@ -121,30 +123,17 @@ public:
       std::cout << "Reprojection error = " << error << "\nK =\n"
                 << K << "\nk=\n"
                 << k << std::endl;
+//        qDebug() << label_folder_path;
+//      QString fp_undistortMatrix = QFileDialog::getSaveFileName(nullptr, "save cameraMatrix", label_folder_path+"/undistortMatrix.yml");//label_folder_path+"/cameraMatrix.txt"
+//      if(!fp_undistortMatrix.isEmpty()) {
+          cv::FileStorage fs_undistort(label_folder_path.toStdString()+"/undistortMatrix.yml", cv::FileStorage::WRITE);
+           fs_undistort << "cameraMatrix" << K;
+           fs_undistort << "distCoeffs" << k;
+           fs_undistort.release();
+//          qDebug() << "hihihihihi";
+//      }
 
-      QJsonObject distortMatrix;
-//      distortMatrix["cameraMatrix"] = K;
-//      distortMatrix["distCoeffs"] = k;
 
-
-//      // Precompute lens correction interpolation
-//      cv::Mat mapX, mapY;
-//      cv::initUndistortRectifyMap(K, k, cv::Matx33f::eye(), K, frameSize, CV_32FC1,
-//                                  mapX, mapY);
-
-//      // Show lens corrected images
-//      for (auto const &f : fileNames) {
-//        std::cout << std::string(f) << std::endl;
-
-//        cv::Mat img = cv::imread(f, cv::IMREAD_COLOR);
-
-//        cv::Mat imgUndistorted;
-//        // 5. Remap the image using the precomputed interpolation maps.
-//        cv::remap(img, imgUndistorted, mapX, mapY, cv::INTER_LINEAR);
-
-//        // Display
-//        cv::imshow("undistorted image", imgUndistorted);
-//        cv::waitKey(0);
 
 
 
