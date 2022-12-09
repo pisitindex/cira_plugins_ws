@@ -487,7 +487,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/img_processing/icon/red_led.png</pixmap>
+    <pixmap resource="../../../resources/img_processing_icon.qrc">:/img_processing/icon/red_led.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -549,19 +549,9 @@ background-repeat: none;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>14</x>
-     <y>20</y>
-     <width>31</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
  </widget>
+ <resources>
+  <include location="../../../resources/img_processing_icon.qrc"/>
+ </resources>
  <connections/>
 </ui>

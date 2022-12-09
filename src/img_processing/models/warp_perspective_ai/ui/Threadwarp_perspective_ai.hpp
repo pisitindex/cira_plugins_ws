@@ -1,20 +1,19 @@
-#ifndef Threadaffine_ai_HPP
-#define Threadaffine_ai_HPP
+#ifndef Threadwarp_perspective_ai_HPP
+#define Threadwarp_perspective_ai_HPP
 
 #include <ros/ros.h>
 #include <cira_lib_bernoulli/general/GlobalData.hpp>
 #include <QThread>
 #include <QJsonObject>
-
 #include <QDebug>
 #include <opencv2/opencv.hpp>
 
-class Threadaffine_ai : public QThread
+class Threadwarp_perspective_ai : public QThread
 {
   Q_OBJECT
 public:
 
-  QString name = "affine_ai";
+  QString name = "warp_perspective_ai";
 
   QJsonObject payload_js_data;
   QJsonObject output_js_data;
@@ -25,7 +24,7 @@ public:
 
   bool isHaveError = false;
 
-  Threadaffine_ai() { }
+  Threadwarp_perspective_ai() { }
 
   void run() {
 
@@ -42,8 +41,6 @@ public:
     }
 
     //********* run here **************
-
-    jso["msg"] = "Hello World";
 
     if(!payload_js_data.contains("DeepDetect")){
         jso["error"] = "No DeepDetect";
@@ -98,4 +95,4 @@ public:
 
 };
 
-#endif // Threadaffine_ai_HPP
+#endif // Threadwarp_perspective_ai_HPP

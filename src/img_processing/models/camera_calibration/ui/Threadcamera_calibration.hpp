@@ -55,16 +55,21 @@ public:
     label_folder_path = param_js_data["label_folder_path"].toString();
     qDebug() << "folder: " << label_folder_path;
 
+    int ui_pattern_horizontal = param_js_data["spinBox_pattern_horizontal"].toInt();
+    int ui_pattern_vertical = param_js_data["spinBox_pattern_vertical"].toInt();
+    int ui_resolutions_horizontal = param_js_data["spinBox_resolutions_horizontal"].toInt();
+    int ui_resolution_vertical = param_js_data["spinBox_resolutions_vertical"].toInt();
+
+
     std::vector<cv::String> fileNames;
       cv::glob(label_folder_path.toStdString()+"/*.png", fileNames, false);
-      cv::Size patternSize(25 - 1, 18 - 1);
+      cv::Size patternSize(ui_pattern_horizontal - 1, ui_pattern_vertical - 1);
       std::vector<std::vector<cv::Point2f>> q(fileNames.size());
 
       std::vector<std::vector<cv::Point3f>> Q;
-      // 1. Generate checkerboard (world) coordinates Q. The board has 25 x 18
-      // fields with a size of 15x15mm
+      // 1. Generate checkerboard (world) coordinates Q
 
-      int checkerBoard[2] = {25,18};
+      int checkerBoard[2] = {ui_pattern_horizontal, ui_pattern_vertical};
       // Defining the world coordinates for 3D points
         std::vector<cv::Point3f> objp;
         for(int i = 1; i<checkerBoard[1]; i++){
@@ -109,7 +114,7 @@ public:
       std::vector<double> stdIntrinsics, stdExtrinsics, perViewErrors;
       int flags = cv::CALIB_FIX_ASPECT_RATIO + cv::CALIB_FIX_K3 +
                   cv::CALIB_ZERO_TANGENT_DIST + cv::CALIB_FIX_PRINCIPAL_POINT;
-      cv::Size frameSize(1440, 1080);
+      cv::Size frameSize(ui_resolutions_horizontal, ui_resolution_vertical);
 
       std::cout << "Calibrating..." << std::endl;
       // 4. Call "float error = cv::calibrateCamera()" with the input coordinates
@@ -117,28 +122,20 @@ public:
 
       float error = cv::calibrateCamera(Q, q, frameSize, K, k, rvecs, tvecs, flags);
 
-
-
-//      qDebug() << "cameraMatrix: " << K;
       std::cout << "Reprojection error = " << error << "\nK =\n"
                 << K << "\nk=\n"
                 << k << std::endl;
-//        qDebug() << label_folder_path;
-//      QString fp_undistortMatrix = QFileDialog::getSaveFileName(nullptr, "save cameraMatrix", label_folder_path+"/undistortMatrix.yml");//label_folder_path+"/cameraMatrix.txt"
-//      if(!fp_undistortMatrix.isEmpty()) {
-          cv::FileStorage fs_undistort(label_folder_path.toStdString()+"/undistortMatrix.yml", cv::FileStorage::WRITE);
-           fs_undistort << "cameraMatrix" << K;
-           fs_undistort << "distCoeffs" << k;
-           fs_undistort.release();
-//          qDebug() << "hihihihihi";
-//      }
+
+      cv::FileStorage fs_undistort(label_folder_path.toStdString()+"/undistortMatrix.yml", cv::FileStorage::WRITE);
+      fs_undistort << "cameraMatrix" << K;
+      fs_undistort << "distCoeffs" << k;
+      fs_undistort.release();
 
 
 
 
 
     payload_js_data[name] = jso;
-//  }
 }
 
 };

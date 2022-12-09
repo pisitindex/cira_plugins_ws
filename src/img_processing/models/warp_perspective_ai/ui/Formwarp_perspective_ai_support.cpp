@@ -1,7 +1,7 @@
-#include "Formaffine_manual.h"
-#include "ui_Formaffine_manual.h"
+#include "Formwarp_perspective_ai.h"
+#include "ui_Formwarp_perspective_ai.h"
 
-void Formaffine_manual::update_ui() {
+void Formwarp_perspective_ai::update_ui() {
 
   if(!nodeStatus_complete) {
 
@@ -26,7 +26,7 @@ void Formaffine_manual::update_ui() {
 
 }
 
-void Formaffine_manual::stop_node_process() {
+void Formwarp_perspective_ai::stop_node_process() {
   /*if(!GlobalData::isAllSceneCanRun && !nodeStatus_complete) {
     if(workerThread->isRunning()) {workerThread->terminate();}
     isHaveError = true;

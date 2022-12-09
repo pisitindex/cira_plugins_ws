@@ -1,26 +1,26 @@
-#ifndef Formaffine_manual_H
-#define Formaffine_manual_H
+#ifndef Formwarp_perspective_ai_H
+#define Formwarp_perspective_ai_H
 
 #include <QWidget>
 #include <iostream>
 #include <QMovie>
 #include <QScreen>
 
-#include "Threadaffine_manual.hpp"
+#include "Threadwarp_perspective_ai.hpp"
 #include <cira_lib_bernoulli/general/GlobalData.hpp>
-#include "popup/Dialogaffine_manual.h"
+#include "popup/Dialogwarp_perspective_ai.h"
 
 namespace Ui {
-class Formaffine_manual;
+class Formwarp_perspective_ai;
 }
 
-class Formaffine_manual : public QWidget
+class Formwarp_perspective_ai : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit Formaffine_manual(QWidget *parent = 0);
-  ~Formaffine_manual();
+  explicit Formwarp_perspective_ai(QWidget *parent = 0);
+  ~Formwarp_perspective_ai();
 
   bool nodeStatus_enable = true;
   bool nodeStatus_ready = true;
@@ -36,8 +36,8 @@ public:
 
   QMovie *mv_node_run;
 
-  Threadaffine_manual *workerThread;
-  Dialogaffine_manual *dialog;
+  Threadwarp_perspective_ai *workerThread;
+  Dialogwarp_perspective_ai *dialog;
 
 public slots:
   void update_ui();
@@ -48,7 +48,7 @@ private slots:
   void on_pushButton_prop_clicked();
 
 private:
-  Ui::Formaffine_manual *ui;
+  Ui::Formwarp_perspective_ai *ui;
 };
 
-#endif // Formaffine_manual_H
+#endif // Formwarp_perspective_ai_H

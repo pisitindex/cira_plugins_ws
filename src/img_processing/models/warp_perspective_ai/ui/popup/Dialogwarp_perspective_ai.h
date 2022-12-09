@@ -1,5 +1,5 @@
-#ifndef Dialogaffine_manual_H
-#define Dialogaffine_manual_H
+#ifndef Dialogwarp_perspective_ai_H
+#define Dialogwarp_perspective_ai_H
 
 #include <QDialog>
 #include <QJsonObject>
@@ -8,16 +8,16 @@
 #include <iostream>
 
 namespace Ui {
-class Dialogaffine_manual;
+class Dialogwarp_perspective_ai;
 }
 
-class Dialogaffine_manual : public QDialog
+class Dialogwarp_perspective_ai : public QDialog
 {
   Q_OBJECT
 
 public:
-  explicit Dialogaffine_manual(QWidget *parent = 0);
-  ~Dialogaffine_manual();
+  explicit Dialogwarp_perspective_ai(QWidget *parent = 0);
+  ~Dialogwarp_perspective_ai();
 
   void changeEvent(QEvent *ev) {
     if (ev->type() == QEvent::ActivationChange)
@@ -44,7 +44,7 @@ public:
   void restoreState(QJsonObject param_js_data);
 
 private:
-  Ui::Dialogaffine_manual *ui;
+  Ui::Dialogwarp_perspective_ai *ui;
 };
 
-#endif // Dialogaffine_manual_H
+#endif // Dialogwarp_perspective_ai_H

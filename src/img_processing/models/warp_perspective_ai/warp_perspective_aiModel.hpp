@@ -1,5 +1,5 @@
-#ifndef affine_aiModel_HPP
-#define affine_aiModel_HPP
+#ifndef warp_perspective_aiModel_HPP
+#define warp_perspective_aiModel_HPP
 
 #pragma once
 
@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-#include "ui/Formaffine_ai.h"
+#include "ui/Formwarp_perspective_ai.h"
 
 using QtNodes::PortType;
 using QtNodes::PortIndex;
@@ -28,16 +28,16 @@ using QtNodes::NodeValidationState;
 
 class FlowData;
 
-class affine_aiModel : public NodeDataModel
+class warp_perspective_aiModel : public NodeDataModel
 {
 
   Q_OBJECT
 
 public:
-  affine_aiModel();
+  warp_perspective_aiModel();
 
   virtual
-  ~affine_aiModel() {}
+  ~warp_perspective_aiModel() {}
 
   int portInStatus[1] = {PORTSTATUS::DISCONNECTED};
 
@@ -45,7 +45,7 @@ public:
 
   QString
   caption() const override
-  { return QStringLiteral("affine_ai"); }
+  { return QStringLiteral("warp_perspective_ai"); }
 
   bool
   captionVisible() const override
@@ -61,7 +61,7 @@ public:
 
   QString
   name() const override
-  { return QStringLiteral("affine_ai"); }
+  { return QStringLiteral("warp_perspective_ai"); }
 
 public:
 
@@ -92,7 +92,7 @@ private:
 
   bool isBusy = false;
   std::shared_ptr<FlowData> _flowDataOut;
-  Formaffine_ai *form;
+  Formwarp_perspective_ai *form;
 
   QTimer *timerLoadFromButton;
 
@@ -102,4 +102,4 @@ private slots:
 
 };
 
-#endif // affine_aiModel_HPP
+#endif // warp_perspective_aiModel_HPP

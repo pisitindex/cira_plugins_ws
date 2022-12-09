@@ -57,9 +57,18 @@ public:
     std::cout <<"cameraMatrix"<< K;
     std::cout <<"distCoeffs"<< k;
     fs.release();
+
+    int h = mat_im.rows; int w = mat_im.cols;
+    cv::Mat newCameraMatrix;
+    newCameraMatrix = cv::getOptimalNewCameraMatrix(K, k, cv::Size(w,h), 1, cv::Size(w,h));
     cv::Mat undist;
-    cv::undistort(mat_im,undist,K,k);
+    cv::undistort(mat_im, undist, K, k, newCameraMatrix);
     mat_im = undist;
+
+
+//    cv::Mat undist;
+//    cv::undistort(mat_im,undist,K,k);
+//    mat_im = undist;
 
     payload_js_data[name] = jso;
   }

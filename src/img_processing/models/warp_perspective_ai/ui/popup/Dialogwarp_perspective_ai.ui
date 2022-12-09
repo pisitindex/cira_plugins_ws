@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialogaffine_ai</class>
- <widget class="QDialog" name="Dialogaffine_ai">
+ <class>Dialogwarp_perspective_ai</class>
+ <widget class="QDialog" name="Dialogwarp_perspective_ai">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>affine_ai</string>
+   <string>warp_perspective_ai</string>
   </property>
  </widget>
  <resources/>

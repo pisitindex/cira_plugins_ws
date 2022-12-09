@@ -3,3 +3,5 @@ devel/
 install/
 logs/
 .catkin_tools/
+cira_plugins_ws.workspace.user
+

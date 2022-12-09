@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Formaffine_manual</class>
- <widget class="QWidget" name="Formaffine_manual">
+ <class>Formwarp_perspective_ai</class>
+ <widget class="QWidget" name="Formwarp_perspective_ai">
   <property name="geometry">
    <rect>
     <x>0</x>

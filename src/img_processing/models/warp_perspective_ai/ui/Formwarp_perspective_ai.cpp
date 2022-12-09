@@ -1,29 +1,29 @@
-#include "Formaffine_ai.h"
-#include "ui_Formaffine_ai.h"
+#include "Formwarp_perspective_ai.h"
+#include "ui_Formwarp_perspective_ai.h"
 
-Formaffine_ai::Formaffine_ai(QWidget *parent) :
+Formwarp_perspective_ai::Formwarp_perspective_ai(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::Formaffine_ai)
+  ui(new Ui::Formwarp_perspective_ai)
 {
   ui->setupUi(this);
 
   timestamp_base = GlobalData::timer.nsecsElapsed();
   nodeStatus_ready = true;
 
-  workerThread = new Threadaffine_ai();
-  dialog = new Dialogaffine_ai();
+  workerThread = new Threadwarp_perspective_ai();
+  dialog = new Dialogwarp_perspective_ai();
 
   mv_node_run = new QMovie(":/img_processing/icon/run_led.gif");
   update_ui();
   connect(GlobalData::GlobalDataObject, SIGNAL(stopAllScene()), this, SLOT(stop_node_process()));
 }
 
-Formaffine_ai::~Formaffine_ai()
+Formwarp_perspective_ai::~Formwarp_perspective_ai()
 {
   delete ui;
 }
 
-void Formaffine_ai::on_pushButton_nodeEnable_clicked()
+void Formwarp_perspective_ai::on_pushButton_nodeEnable_clicked()
 {
   if(nodeStatus_enable) {
     ui->pushButton_nodeEnable->setStyleSheet(style_nodeDisable);
@@ -35,7 +35,7 @@ void Formaffine_ai::on_pushButton_nodeEnable_clicked()
   }
 }
 
-void Formaffine_ai::on_pushButton_prop_clicked()
+void Formwarp_perspective_ai::on_pushButton_prop_clicked()
 {
   dialog->setWindowModality(Qt::NonModal); dialog->setParent(GlobalData::parent);
   dialog->setWindowFlags( /*Qt::WindowTitleHint | Qt::FramelessWindowHint |*/

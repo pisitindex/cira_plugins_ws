@@ -41,7 +41,7 @@ void Formcamera_calibration::on_pushButton_prop_clicked()
   dialog->setWindowFlags( /*Qt::WindowTitleHint | Qt::FramelessWindowHint |*/
                                       Qt::Window |  Qt::WindowCloseButtonHint /* | Qt::Popup*/);
 
-  if(ui->label->pixmap()) dialog->setWindowIcon(QIcon(   *ui->label->pixmap()   ));
+
 
   QSize size = qApp->screens()[0]->size();
   QPoint p = QCursor::pos();

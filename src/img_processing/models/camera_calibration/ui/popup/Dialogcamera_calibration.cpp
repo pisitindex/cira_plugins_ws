@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QDir>
 #include <cira_lib_bernoulli/general/GlobalData.hpp>
-
+#include <QPixmap>
 
 
 Dialogcamera_calibration::Dialogcamera_calibration(QWidget *parent) :
@@ -22,12 +22,19 @@ Dialogcamera_calibration::~Dialogcamera_calibration()
 QJsonObject Dialogcamera_calibration::saveState() {
   QJsonObject param_js_data;
   param_js_data["label_folder_path"]  = ui->label_folder_path->text();
-  qDebug() << ui->label_folder_path->text();
+  param_js_data["spinBox_pattern_horizontal"] = ui->spinBox_pattern_horizontal->value();
+  param_js_data["spinBox_pattern_vertical"] = ui->spinBox_pattern_vertical->value();
+  param_js_data["spinBox_resolutions_horizontal"] = ui->spinBox_resolutions_horizontal->value();
+  param_js_data["spinBox_resolutions_vertical"] = ui->spinBox_resolutions_vertical->value();
   return param_js_data;
 }
 
 void Dialogcamera_calibration::restoreState(QJsonObject param_js_data) {
     ui->label_folder_path->setText(param_js_data["label_folder_path"].toString());
+    ui->spinBox_pattern_vertical->setValue(param_js_data["spinBox_pattern_vertical"].toInt());
+    ui->spinBox_pattern_horizontal->setValue(param_js_data["spinBox_pattern_horizontal"].toInt());
+    ui->spinBox_resolutions_vertical->setValue(param_js_data["spinBox_resolutions_vertical"].toInt());
+    ui->spinBox_resolutions_horizontal->setValue(param_js_data["spinBox_resolutions_horizontal"].toInt());
 }
 
 
