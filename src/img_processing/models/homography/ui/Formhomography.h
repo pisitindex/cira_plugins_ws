@@ -1,26 +1,26 @@
-#ifndef Formwarp_perspective_ai_H
-#define Formwarp_perspective_ai_H
+#ifndef Formhomography_H
+#define Formhomography_H
 
 #include <QWidget>
 #include <iostream>
 #include <QMovie>
 #include <QScreen>
 
-#include "Threadwarp_perspective_ai.hpp"
+#include "Threadhomography.hpp"
 #include <cira_lib_bernoulli/general/GlobalData.hpp>
-#include "popup/Dialogwarp_perspective_ai.h"
+#include "popup/Dialoghomography.h"
 
 namespace Ui {
-class Formwarp_perspective_ai;
+class Formhomography;
 }
 
-class Formwarp_perspective_ai : public QWidget
+class Formhomography : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit Formwarp_perspective_ai(QWidget *parent = 0);
-  ~Formwarp_perspective_ai();
+  explicit Formhomography(QWidget *parent = 0);
+  ~Formhomography();
 
   bool nodeStatus_enable = true;
   bool nodeStatus_ready = true;
@@ -36,8 +36,8 @@ public:
 
   QMovie *mv_node_run;
 
-  Threadwarp_perspective_ai *workerThread;
-  Dialogwarp_perspective_ai *dialog;
+  Threadhomography *workerThread;
+  Dialoghomography *dialog;
 
 public slots:
   void update_ui();
@@ -48,7 +48,7 @@ private slots:
   void on_pushButton_prop_clicked();
 
 private:
-  Ui::Formwarp_perspective_ai *ui;
+  Ui::Formhomography *ui;
 };
 
-#endif // Formwarp_perspective_ai_H
+#endif // Formhomography_H

@@ -1,14 +1,14 @@
-#include "warp_perspective_aiModel.hpp"
+#include "homographyModel.hpp"
 #include <cira_lib_bernoulli/datatype/FlowData.hpp>
 
 #include <QtConcurrent/QtConcurrent>
 
-warp_perspective_aiModel::
-warp_perspective_aiModel()
+homographyModel::
+homographyModel()
 {
   if(!GlobalData::isInitialized) return;
 
-  form = new Formwarp_perspective_ai();
+  form = new Formhomography();
 
   if(GlobalData::isLoadingFlow) {
     timerLoadFromButton = new QTimer(this);
@@ -23,7 +23,7 @@ warp_perspective_aiModel()
 
 }
 
-void warp_perspective_aiModel::runProcess(std::shared_ptr<FlowData> _flowDataIn) {
+void homographyModel::runProcess(std::shared_ptr<FlowData> _flowDataIn) {
 
   FlowDataType flowdata = _flowDataIn->getFlowData();
 
@@ -66,7 +66,7 @@ void warp_perspective_aiModel::runProcess(std::shared_ptr<FlowData> _flowDataIn)
 }
 
 
-void warp_perspective_aiModel::loopTimerLoadFromButton() {
+void homographyModel::loopTimerLoadFromButton() {
   if(!GlobalData::isLoadingFlow) {
     timerLoadFromButton->stop();
     delete timerLoadFromButton;
@@ -81,7 +81,7 @@ void warp_perspective_aiModel::loopTimerLoadFromButton() {
 
 
 QJsonObject
-warp_perspective_aiModel::
+homographyModel::
 save() const
 {
 
@@ -97,7 +97,7 @@ save() const
 
 
 void
-warp_perspective_aiModel::
+homographyModel::
 restore(QJsonObject const &p)
 {
 
@@ -120,7 +120,7 @@ restore(QJsonObject const &p)
 }
 
 unsigned int
-warp_perspective_aiModel::
+homographyModel::
 nPorts(PortType portType) const
 {
   unsigned int result = 1;
@@ -142,7 +142,7 @@ nPorts(PortType portType) const
 }
 
 NodeDataType
-warp_perspective_aiModel::
+homographyModel::
 dataType(PortType portType, PortIndex portIndex) const
 {
   switch (portType)
@@ -169,7 +169,7 @@ dataType(PortType portType, PortIndex portIndex) const
 
 }
 
-void warp_perspective_aiModel::setInData(std::shared_ptr<QtNodes::NodeData> data, PortIndex portIndex) {
+void homographyModel::setInData(std::shared_ptr<QtNodes::NodeData> data, PortIndex portIndex) {
 
   if(isBusy || !form->nodeStatus_complete) {
     form->timestamp_base = GlobalData::timer.nsecsElapsed();
@@ -207,7 +207,7 @@ void warp_perspective_aiModel::setInData(std::shared_ptr<QtNodes::NodeData> data
     form->nodeStatus_complete = false;
     form->isHaveError = false;
     form->update_ui();
-    QtConcurrent::run(this, &warp_perspective_aiModel::runProcess, _flowDataIn);
+    QtConcurrent::run(this, &homographyModel::runProcess, _flowDataIn);
 
   }
 
@@ -216,7 +216,7 @@ void warp_perspective_aiModel::setInData(std::shared_ptr<QtNodes::NodeData> data
 }
 
 std::shared_ptr<NodeData>
-warp_perspective_aiModel::
+homographyModel::
 outData(PortIndex port)
 {
   form->update_ui();

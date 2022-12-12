@@ -1,7 +1,7 @@
-#include "Formwarp_perspective_ai.h"
-#include "ui_Formwarp_perspective_ai.h"
+#include "Formhomography.h"
+#include "ui_Formhomography.h"
 
-void Formwarp_perspective_ai::update_ui() {
+void Formhomography::update_ui() {
 
   if(!nodeStatus_complete) {
 
@@ -26,7 +26,7 @@ void Formwarp_perspective_ai::update_ui() {
 
 }
 
-void Formwarp_perspective_ai::stop_node_process() {
+void Formhomography::stop_node_process() {
   /*if(!GlobalData::isAllSceneCanRun && !nodeStatus_complete) {
     if(workerThread->isRunning()) {workerThread->terminate();}
     isHaveError = true;

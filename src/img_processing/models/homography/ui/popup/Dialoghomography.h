@@ -1,5 +1,5 @@
-#ifndef Dialogwarp_perspective_ai_H
-#define Dialogwarp_perspective_ai_H
+#ifndef Dialoghomography_H
+#define Dialoghomography_H
 
 #include <QDialog>
 #include <QJsonObject>
@@ -8,16 +8,16 @@
 #include <iostream>
 
 namespace Ui {
-class Dialogwarp_perspective_ai;
+class Dialoghomography;
 }
 
-class Dialogwarp_perspective_ai : public QDialog
+class Dialoghomography : public QDialog
 {
   Q_OBJECT
 
 public:
-  explicit Dialogwarp_perspective_ai(QWidget *parent = 0);
-  ~Dialogwarp_perspective_ai();
+  explicit Dialoghomography(QWidget *parent = 0);
+  ~Dialoghomography();
 
   void changeEvent(QEvent *ev) {
     if (ev->type() == QEvent::ActivationChange)
@@ -44,7 +44,7 @@ public:
   void restoreState(QJsonObject param_js_data);
 
 private:
-  Ui::Dialogwarp_perspective_ai *ui;
+  Ui::Dialoghomography *ui;
 };
 
-#endif // Dialogwarp_perspective_ai_H
+#endif // Dialoghomography_H

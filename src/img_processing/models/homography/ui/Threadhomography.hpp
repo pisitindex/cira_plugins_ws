@@ -1,5 +1,5 @@
-#ifndef Threadwarp_perspective_ai_HPP
-#define Threadwarp_perspective_ai_HPP
+#ifndef Threadhomography_HPP
+#define Threadhomography_HPP
 
 #include <ros/ros.h>
 #include <cira_lib_bernoulli/general/GlobalData.hpp>
@@ -8,12 +8,12 @@
 #include <QDebug>
 #include <opencv2/opencv.hpp>
 
-class Threadwarp_perspective_ai : public QThread
+class Threadhomography : public QThread
 {
   Q_OBJECT
 public:
 
-  QString name = "warp_perspective_ai";
+  QString name = "homography";
 
   QJsonObject payload_js_data;
   QJsonObject output_js_data;
@@ -24,7 +24,7 @@ public:
 
   bool isHaveError = false;
 
-  Threadwarp_perspective_ai() { }
+  Threadhomography() { }
 
   void run() {
 
@@ -41,6 +41,7 @@ public:
     }
 
     //********* run here **************
+
 
     int spinBox_horizontal = param_js_data["spinBox_horizontal"].toInt();
     int spinBox_vertical = param_js_data["spinBox_vertical"].toInt();
@@ -92,10 +93,11 @@ public:
 
     mat_im = out;
 
+
     payload_js_data[name] = jso;
   }
 
 
 };
 
-#endif // Threadwarp_perspective_ai_HPP
+#endif // Threadhomography_HPP

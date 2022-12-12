@@ -1,5 +1,5 @@
-#ifndef warp_perspective_aiModel_HPP
-#define warp_perspective_aiModel_HPP
+#ifndef homographyModel_HPP
+#define homographyModel_HPP
 
 #pragma once
 
@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-#include "ui/Formwarp_perspective_ai.h"
+#include "ui/Formhomography.h"
 
 using QtNodes::PortType;
 using QtNodes::PortIndex;
@@ -28,16 +28,16 @@ using QtNodes::NodeValidationState;
 
 class FlowData;
 
-class warp_perspective_aiModel : public NodeDataModel
+class homographyModel : public NodeDataModel
 {
 
   Q_OBJECT
 
 public:
-  warp_perspective_aiModel();
+  homographyModel();
 
   virtual
-  ~warp_perspective_aiModel() {}
+  ~homographyModel() {}
 
   int portInStatus[1] = {PORTSTATUS::DISCONNECTED};
 
@@ -45,7 +45,7 @@ public:
 
   QString
   caption() const override
-  { return QStringLiteral("warp_perspective_ai"); }
+  { return QStringLiteral("homography"); }
 
   bool
   captionVisible() const override
@@ -61,7 +61,7 @@ public:
 
   QString
   name() const override
-  { return QStringLiteral("warp_perspective_ai"); }
+  { return QStringLiteral("homography"); }
 
 public:
 
@@ -92,7 +92,7 @@ private:
 
   bool isBusy = false;
   std::shared_ptr<FlowData> _flowDataOut;
-  Formwarp_perspective_ai *form;
+  Formhomography *form;
 
   QTimer *timerLoadFromButton;
 
@@ -102,4 +102,4 @@ private slots:
 
 };
 
-#endif // warp_perspective_aiModel_HPP
+#endif // homographyModel_HPP

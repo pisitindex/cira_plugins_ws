@@ -1,29 +1,29 @@
-#include "Formwarp_perspective_ai.h"
-#include "ui_Formwarp_perspective_ai.h"
+#include "Formhomography.h"
+#include "ui_Formhomography.h"
 
-Formwarp_perspective_ai::Formwarp_perspective_ai(QWidget *parent) :
+Formhomography::Formhomography(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::Formwarp_perspective_ai)
+  ui(new Ui::Formhomography)
 {
   ui->setupUi(this);
 
   timestamp_base = GlobalData::timer.nsecsElapsed();
   nodeStatus_ready = true;
 
-  workerThread = new Threadwarp_perspective_ai();
-  dialog = new Dialogwarp_perspective_ai();
+  workerThread = new Threadhomography();
+  dialog = new Dialoghomography();
 
   mv_node_run = new QMovie(":/img_processing/icon/run_led.gif");
   update_ui();
   connect(GlobalData::GlobalDataObject, SIGNAL(stopAllScene()), this, SLOT(stop_node_process()));
 }
 
-Formwarp_perspective_ai::~Formwarp_perspective_ai()
+Formhomography::~Formhomography()
 {
   delete ui;
 }
 
-void Formwarp_perspective_ai::on_pushButton_nodeEnable_clicked()
+void Formhomography::on_pushButton_nodeEnable_clicked()
 {
   if(nodeStatus_enable) {
     ui->pushButton_nodeEnable->setStyleSheet(style_nodeDisable);
@@ -35,7 +35,7 @@ void Formwarp_perspective_ai::on_pushButton_nodeEnable_clicked()
   }
 }
 
-void Formwarp_perspective_ai::on_pushButton_prop_clicked()
+void Formhomography::on_pushButton_prop_clicked()
 {
   dialog->setWindowModality(Qt::NonModal); dialog->setParent(GlobalData::parent);
   dialog->setWindowFlags( /*Qt::WindowTitleHint | Qt::FramelessWindowHint |*/

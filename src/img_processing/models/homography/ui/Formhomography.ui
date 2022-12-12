@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Formwarp_perspective_ai</class>
- <widget class="QWidget" name="Formwarp_perspective_ai">
+ <class>Formhomography</class>
+ <widget class="QWidget" name="Formhomography">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>120</width>
-    <height>58</height>
+    <width>75</width>
+    <height>47</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -477,7 +477,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
   <widget class="QLabel" name="label_nodeStatus">
    <property name="geometry">
     <rect>
-     <x>96</x>
+     <x>53</x>
      <y>1</y>
      <width>21</width>
      <height>16</height>
@@ -521,7 +521,7 @@ background-repeat: none;
   <widget class="QPushButton" name="pushButton_prop">
    <property name="geometry">
     <rect>
-     <x>98</x>
+     <x>55</x>
      <y>18</y>
      <width>21</width>
      <height>21</height>
@@ -565,10 +565,10 @@ background-repeat: none;
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>33</x>
-     <y>11</y>
-     <width>51</width>
-     <height>41</height>
+     <x>18</x>
+     <y>21</y>
+     <width>31</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
