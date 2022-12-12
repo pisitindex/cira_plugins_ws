@@ -562,9 +562,29 @@ background-repeat: none;
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>19</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../../resources/img_processing_images.qrc">:/img_processing/images/undistort.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="../../../resources/img_processing_icon.qrc"/>
+  <include location="../../../resources/img_processing_images.qrc"/>
  </resources>
  <connections/>
 </ui>

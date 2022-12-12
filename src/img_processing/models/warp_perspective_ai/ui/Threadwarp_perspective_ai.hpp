@@ -42,6 +42,9 @@ public:
 
     //********* run here **************
 
+    int spinBox_horizontal = param_js_data["spinBox_horizontal"].toInt();
+    int spinBox_vertical = param_js_data["spinBox_vertical"].toInt();
+
     if(!payload_js_data.contains("DeepDetect")){
         jso["error"] = "No DeepDetect";
         isHaveError = true;
@@ -79,11 +82,11 @@ public:
     //destination
     cv::Point2f p_dest[4];
     p_dest[0] = cv::Point2f(0, 0);
-    p_dest[1] = cv::Point2f(1920, 0);
-    p_dest[2] = cv::Point2f(1920, 1080);
-    p_dest[3] = cv::Point2f(0, 1080);
+    p_dest[1] = cv::Point2f(spinBox_horizontal, 0);
+    p_dest[2] = cv::Point2f(spinBox_horizontal, spinBox_vertical);
+    p_dest[3] = cv::Point2f(0, spinBox_vertical);
 
-    cv::Mat out(cv::Size(1920, 1080), CV_8UC3);
+    cv::Mat out(cv::Size(spinBox_horizontal, spinBox_vertical), CV_8UC3);
     cv::Mat M = cv::getPerspectiveTransform(p_curr, p_dest);
     cv::warpPerspective(mat_im, out, M, out.size());
 

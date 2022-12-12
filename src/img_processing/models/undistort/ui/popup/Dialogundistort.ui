@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>363</width>
-    <height>198</height>
+    <width>277</width>
+    <height>124</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QPushButton" name="pushButton_path_to_file">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>60</y>
+     <x>20</x>
+     <y>22</y>
      <width>89</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -29,9 +29,9 @@
   <widget class="QLabel" name="label_path_to_file">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>60</y>
-     <width>67</width>
+     <x>127</x>
+     <y>30</y>
+     <width>141</width>
      <height>17</height>
     </rect>
    </property>

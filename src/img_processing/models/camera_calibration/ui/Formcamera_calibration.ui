@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>75</width>
-    <height>47</height>
+    <width>115</width>
+    <height>71</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -477,7 +477,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
   <widget class="QLabel" name="label_nodeStatus">
    <property name="geometry">
     <rect>
-     <x>53</x>
+     <x>88</x>
      <y>1</y>
      <width>21</width>
      <height>16</height>
@@ -521,7 +521,7 @@ background-repeat: none;
   <widget class="QPushButton" name="pushButton_prop">
    <property name="geometry">
     <rect>
-     <x>55</x>
+     <x>90</x>
      <y>18</y>
      <width>21</width>
      <height>21</height>
@@ -549,9 +549,29 @@ background-repeat: none;
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>21</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../../resources/img_processing_images.qrc">:/img_processing/images/distort.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="../../../resources/img_processing_icon.qrc"/>
+  <include location="../../../resources/img_processing_images.qrc"/>
  </resources>
  <connections/>
 </ui>

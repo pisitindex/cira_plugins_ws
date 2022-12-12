@@ -8,5 +8,8 @@
         <file>images/down_arrow.png</file>
         <file>images/checkbox.png</file>
         <file>images/icon.png</file>
+        <file>images/distort.png</file>
+        <file>images/undistort.png</file>
+        <file>images/original image.jpg</file>
     </qresource>
 </RCC>
