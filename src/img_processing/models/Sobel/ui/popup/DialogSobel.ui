@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogSobel</class>
+ <widget class="QDialog" name="DialogSobel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>255</width>
+    <height>137</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sobel</string>
+  </property>
+  <widget class="QComboBox" name="comboBox_mode">
+   <property name="geometry">
+    <rect>
+     <x>55</x>
+     <y>40</y>
+     <width>101</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Horizontal</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Vertical</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mixed</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
