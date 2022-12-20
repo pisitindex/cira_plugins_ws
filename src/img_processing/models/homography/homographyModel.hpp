@@ -91,7 +91,7 @@ public:
 private:
 
   bool isBusy = false;
-  std::shared_ptr<FlowData> _flowDataOut;
+  std::shared_ptr<FlowData> _flowDataOut[2];
   Formhomography *form;
 
   QTimer *timerLoadFromButton;

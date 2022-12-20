@@ -17,9 +17,13 @@ homographyModel()
   }
 
   FlowDataType flowdata_;
-  _flowDataOut.reset();
-  _flowDataOut = std::make_shared<FlowData>(flowdata_);
-  emit dataUpdated(0);
+
+  for(int i=0; i<2; i++){
+      _flowDataOut[i].reset();
+      _flowDataOut[i] = std::make_shared<FlowData>(flowdata_);
+      emit dataUpdated(i);
+  }
+
 
 }
 
@@ -59,9 +63,13 @@ void homographyModel::runProcess(std::shared_ptr<FlowData> _flowDataIn) {
   }
   flowdata._output_js_data = form->workerThread->output_js_data;
 
-  _flowDataOut = std::make_shared<FlowData>(flowdata);
-  form->nodeStatus_complete = true;
+  _flowDataOut[0] = std::make_shared<FlowData>(flowdata);
   emit dataUpdated(0);
+
+  flowdata._img = form->workerThread->mat_im1;
+  _flowDataOut[1] = std::make_shared<FlowData>(flowdata);
+  form->nodeStatus_complete = true;
+  emit dataUpdated(1);
 
 }
 
@@ -75,8 +83,11 @@ void homographyModel::loopTimerLoadFromButton() {
 
   FlowDataType flowdata_;
   flowdata_._payload_js_data["load_complete"] = true;
-  _flowDataOut = std::make_shared<FlowData>(flowdata_);
-  emit dataUpdated(0);
+  for(int i=0; i<2; i++){
+      _flowDataOut[i].reset();
+      _flowDataOut[i] = std::make_shared<FlowData>(flowdata_);
+      emit dataUpdated(i);
+  }
 }
 
 
@@ -132,7 +143,7 @@ nPorts(PortType portType) const
       break;
 
     case PortType::Out:
-      result = 1;
+      result = 2;
 
     default:
       break;
@@ -159,6 +170,8 @@ dataType(PortType portType, PortIndex portIndex) const
       switch (portIndex)
       {
         case 0:
+          return FlowData().type();
+        case 1:
           return FlowData().type();
       }
       break;
@@ -220,10 +233,8 @@ homographyModel::
 outData(PortIndex port)
 {
   form->update_ui();
-  switch (port)
-  {
-    case 0:
-      return _flowDataOut;;
+  if(port >=0 && port < 2){
+      return _flowDataOut[port];
   }
   return nullptr;
 }

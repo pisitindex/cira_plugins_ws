@@ -62,7 +62,7 @@ public:
 
 
     std::vector<cv::String> fileNames;
-      cv::glob(label_folder_path.toStdString()+"/*.png", fileNames, false);
+      cv::glob(label_folder_path.toStdString()+"/*.jpg", fileNames, false);
       cv::Size patternSize(ui_pattern_horizontal - 1, ui_pattern_vertical - 1);
       std::vector<std::vector<cv::Point2f>> q(fileNames.size());
 

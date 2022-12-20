@@ -20,7 +20,7 @@ public:
   QJsonObject param_js_data;
 
   bool isUseImage = true;
-  cv::Mat mat_im;
+  cv::Mat mat_im, mat_im1;
 
   bool isHaveError = false;
 
@@ -43,14 +43,23 @@ public:
     //********* run here **************
 
 
+    bool using_ai = param_js_data["using_ai"].toBool();
+
     int spinBox_horizontal = param_js_data["spinBox_horizontal"].toInt();
     int spinBox_vertical = param_js_data["spinBox_vertical"].toInt();
+
+
+    cv::Point2f p_curr[4];
+
+
+    if(using_ai){
 
     if(!payload_js_data.contains("DeepDetect")){
         jso["error"] = "No DeepDetect";
         isHaveError = true;
         return;
     }
+
     QJsonArray objects = payload_js_data["DeepDetect"].toObject()["objects"].toArray();
 
     bool is_found_a = false;
@@ -58,17 +67,12 @@ public:
     bool is_found_c = false;
     bool is_found_d = false;
 
-    cv::Point2f p_curr[4];
-
     for(int i = 0; i < objects.size(); i++) {
     QJsonObject obj = objects[i].toObject();
     QString name = obj["name"].toString();
     int x = obj["x"].toInt(); int y = obj["y"].toInt();
     cv::Point2f p(x, y);
-
     qDebug() << "--- " << name << x << y;
-
-
     if(name == "a") { is_found_a=true; p_curr[0] = p; }
     if(name == "b") { is_found_b=true; p_curr[1] = p; }
     if(name == "c") { is_found_c=true; p_curr[2] = p; }
@@ -78,6 +82,30 @@ public:
     if(!is_found_a || !is_found_b || !is_found_c || !is_found_d) {
     isHaveError = true;
     return;
+    }
+    }
+
+    else{
+        int point1_x = param_js_data["spinBox_point1_x"].toInt();
+        int point1_y = param_js_data["spinBox_point1_y"].toInt();
+        int point2_x = param_js_data["spinBox_point2_x"].toInt();
+        int point2_y = param_js_data["spinBox_point2_y"].toInt();
+        int point3_x = param_js_data["spinBox_point3_x"].toInt();
+        int point3_y = param_js_data["spinBox_point3_y"].toInt();
+        int point4_x = param_js_data["spinBox_point4_x"].toInt();
+        int point4_y = param_js_data["spinBox_point4_y"].toInt();
+
+        int radious = 10;
+        int thickness = 5;
+
+        p_curr[0] = cv::Point2f(point1_x, point1_y);
+        p_curr[1] = cv::Point2f(point2_x, point2_y);
+        p_curr[2] = cv::Point2f(point3_x, point3_y);
+        p_curr[3] = cv::Point2f(point4_x, point4_y);
+        cv::circle(mat_im, p_curr[0], radious, cv::Scalar(0,0,255), thickness);
+        cv::circle(mat_im, p_curr[1], radious, cv::Scalar(0,255,255), thickness);
+        cv::circle(mat_im, p_curr[2], radious, cv::Scalar(255,0,255), thickness);
+        cv::circle(mat_im, p_curr[3], radious, cv::Scalar(255,255,0), thickness);
     }
 
     //destination
@@ -91,7 +119,7 @@ public:
     cv::Mat M = cv::getPerspectiveTransform(p_curr, p_dest);
     cv::warpPerspective(mat_im, out, M, out.size());
 
-    mat_im = out;
+    mat_im1 = out;
 
 
     payload_js_data[name] = jso;
