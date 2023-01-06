@@ -50,8 +50,6 @@ public:
 
 
     cv::Point2f p_curr[4];
-
-
     if(using_ai){
 
     if(!payload_js_data.contains("DeepDetect")){

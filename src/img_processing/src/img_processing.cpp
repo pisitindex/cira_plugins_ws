@@ -4,6 +4,7 @@
 #include <models/undistort/undistortModel.hpp>
 #include <models/homography/homographyModel.hpp>
 #include <models/Sobel/SobelModel.hpp>
+#include <models/resize/resizeModel.hpp>
 
 img_processing::img_processing() {
 
@@ -15,6 +16,7 @@ std::shared_ptr<DataModelRegistry> img_processing::registerDataModels(std::share
   ret->registerModel<undistortModel>();
   ret->registerModel<homographyModel>();
   ret->registerModel<SobelModel>();
+  ret->registerModel<resizeModel>();
 
   setTreeWidget();
   return ret;
@@ -31,5 +33,6 @@ void img_processing::setTreeWidget() {
   strListNodeDataModels << category + ",undistort"+ ",null";
   strListNodeDataModels << category + ",homography"+ ",null";
   strListNodeDataModels << category + ",Sobel"+ ",null";
+  strListNodeDataModels << category + ",resize"+ ",null";
   CiraBernoulliWidget::pluginTreeWidget->addNodeDataModels(strListNodeDataModels);
 }

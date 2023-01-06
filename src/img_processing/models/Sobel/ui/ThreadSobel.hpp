@@ -42,7 +42,6 @@ public:
 
     //********* run here **************
 
-
     QString mode = param_js_data["mode"].toString();
 
     // prepare image //
@@ -61,19 +60,19 @@ public:
     // select mode
     cv::Mat sobel;
     if(mode == "Horizontal"){
-        cv::Sobel(img_blur, sobel, CV_16S, 0, 1, 5);
+        cv::Sobel(img_blur, sobel, CV_16S, 0, 1, 3);
     }
     if(mode == "Vertical"){
-        cv::Sobel(img_blur, sobel, CV_16S, 1, 0, 5);
+        cv::Sobel(img_blur, sobel, CV_16S, 1, 0, 3);
     }
     if(mode == "Mixed"){
         cv::Mat sobelx, sobely;
-        cv::Sobel(img_blur, sobelx, CV_64F, 0, 1, 5);
-        cv::Sobel(img_blur, sobely, CV_64F, 1, 0, 5);
+        cv::Sobel(img_blur, sobelx, CV_64F, 0, 1, 3);
+        cv::Sobel(img_blur, sobely, CV_64F, 1, 0, 3);
         sobel = sobelx + sobely;
     }
 
-    cv::threshold(sobel, sobel, 140,255,cv::THRESH_TOZERO);
+//    cv::threshold(sobel, sobel, 140, 255, cv::THRESH_TOZERO);
     cv::convertScaleAbs(sobel, mat_im);
     cv::cvtColor(mat_im, mat_im, cv::COLOR_GRAY2BGR);
     cv::hconcat(original, mat_im, concat);
