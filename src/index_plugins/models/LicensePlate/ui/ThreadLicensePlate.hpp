@@ -10,7 +10,8 @@
 #include <opencv2/opencv.hpp>
 #include <QDebug>
 #include <string>
-
+#include <iostream>
+#include <cstdlib>
 
 class ThreadLicensePlate : public QThread
 {
@@ -24,11 +25,126 @@ public:
   QJsonObject param_js_data;
 
   bool isUseImage = true;
+
   cv::Mat mat_im;
 
   bool isHaveError = false;
 
   ThreadLicensePlate() { }
+
+  cv::Mat homography(cv::Mat inputImage, int dest_width, int dest_height){
+
+      DeepDetectParam param;
+      param.drawing.is_draw_result = false;
+      DeepDetectResult corner = cira_std::deepDetectRun("corner", inputImage, param);
+      cv::Point2f p_curr[4];
+
+      bool is_found_a = false;
+      bool is_found_b = false;
+      bool is_found_c = false;
+      bool is_found_d = false;
+
+      for(int i = 0; i < corner.objects.size(); i++) {
+      QString name = corner.objects[i].name;
+      int x = corner.objects[i].x; int y = corner.objects[i].y;
+      cv::Point2f p(x, y);
+
+
+      if(name == "a") { is_found_a=true; p_curr[0] = p; }
+      if(name == "b") { is_found_b=true; p_curr[1] = p; }
+      if(name == "c") { is_found_c=true; p_curr[2] = p; }
+      if(name == "d") { is_found_d=true; p_curr[3] = p; }
+      }
+
+      if(!is_found_a || !is_found_b || !is_found_c || !is_found_d) {
+      isHaveError = true;
+      return inputImage;
+      }
+
+      //destination
+      cv::Point2f p_dest[4];
+      p_dest[0] = cv::Point2f(0, 0);
+      p_dest[1] = cv::Point2f(dest_width, 0);
+      p_dest[2] = cv::Point2f(dest_width, dest_height);
+      p_dest[3] = cv::Point2f(0, dest_height);
+
+      cv::Mat out(cv::Size(dest_width, dest_height), CV_8UC3);
+      cv::Mat M = cv::getPerspectiveTransform(p_curr, p_dest);
+      cv::warpPerspective(inputImage, out, M, out.size());
+      return out;
+  }
+
+  void BrightnessAndContrastAuto(const cv::Mat &src, cv::Mat &dst, float clipHistPercent=0)
+  {
+
+  CV_Assert(clipHistPercent >= 0);
+  CV_Assert((src.type() == CV_8UC1) || (src.type() == CV_8UC3) || (src.type() == CV_8UC4));
+
+  int histSize = 256;
+  float alpha, beta;
+  double minGray = 0, maxGray = 0;
+
+  //to calculate grayscale histogram
+  cv::Mat gray;
+  if (src.type() == CV_8UC1) gray = src;
+  else if (src.type() == CV_8UC3) cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+  else if (src.type() == CV_8UC4) cv::cvtColor(src, gray, cv::COLOR_BGRA2GRAY);
+  if (clipHistPercent == 0)
+  {
+  // keep full available range
+  cv::minMaxLoc(gray, &minGray, &maxGray);
+  }
+  else
+  {
+  cv::Mat hist; //the grayscale histogram
+
+  float range[] = { 0, 256 };
+  const float* histRange = { range };
+  bool uniform = true;
+  bool accumulate = false;
+  calcHist(&gray, 1, 0, cv::Mat (), hist, 1, &histSize, &histRange, uniform, accumulate);
+
+  // calculate cumulative distribution from the histogram
+  std::vector<float> accumulator(histSize);
+  accumulator[0] = hist.at<float>(0);
+  for (int i = 1; i < histSize; i++)
+  {
+  accumulator[i] = accumulator[i - 1] + hist.at<float>(i);
+  }
+
+  // locate points that cuts at required value
+  float max = accumulator.back();
+  clipHistPercent *= (max / 100.0); //make percent as absolute
+  clipHistPercent /= 2.0; // left and right wings
+  // locate left cut
+  minGray = 0;
+  while (accumulator[minGray] < clipHistPercent)
+  minGray++;
+
+  // locate right cut
+  maxGray = histSize - 1;
+  while (accumulator[maxGray] >= (max - clipHistPercent))
+  maxGray--;
+  }
+
+  // current range
+  float inputRange = maxGray - minGray;
+
+  alpha = (histSize - 1) / inputRange; // alpha expands current range to histsize range
+  beta = -minGray * alpha; // beta shifts current range so that minGray will go to 0
+
+  // Apply brightness and contrast normalization
+  // convertTo operates with saurate_cast
+  src.convertTo(dst, -1, alpha, beta);
+
+  // restore alpha channel from source
+  if (dst.type() == CV_8UC4)
+  {
+  int from_to[] = { 3, 3};
+  cv::mixChannels(&src, 4, &dst,1, from_to, 1);
+  }
+  return;
+  }
 
   void run() {
 
@@ -51,61 +167,69 @@ public:
     DeepDetectParam param;
     param.drawing.is_draw_result = false;
     DeepDetectResult license = cira_std::deepDetectRun("license", tmp_img, param);
+    QJsonArray result;
+    int font_thickness = 2;
+    double fontScale = 0.6;
+    cv::Scalar font_color(66, 245, 111);
 
     for(int each_license = 0; each_license < license.objects.size(); each_license++){
         int each_license_x = license.objects[each_license].x;
         int each_license_y = license.objects[each_license].y;
         int each_license_w = license.objects[each_license].w;
         int each_license_h = license.objects[each_license].h;
+
         cv::Rect rect(each_license_x-each_license_w/2, each_license_y-each_license_h/2, each_license_w, each_license_h);
         cv::Mat crop = cira_std::getROI(tmp_img, rect);
 
-        DeepDetectResult corner = cira_std::deepDetectRun("corner", crop, param);
-        cv::Point2f p_curr[4];
+        cv::Mat homo_img = homography(crop, 1280, 720);
 
-        bool is_found_a = false;
-        bool is_found_b = false;
-        bool is_found_c = false;
-        bool is_found_d = false;
+        cv::Mat homo_img_gray, after_brightness_adjustment;
+        cv::cvtColor(homo_img, homo_img_gray, cv::COLOR_BGR2GRAY);
+        BrightnessAndContrastAuto(homo_img_gray, after_brightness_adjustment, 10);
 
-        for(int i = 0; i < corner.objects.size(); i++) {
-        QString name = corner.objects[i].name;
-        int x = corner.objects[i].x; int y = corner.objects[i].y;
-        cv::Point2f p(x, y);
+        cv::cvtColor(after_brightness_adjustment, after_brightness_adjustment, cv::COLOR_GRAY2BGR);
+
+        DeepDetectResult details = cira_std::deepDetectRun("details", after_brightness_adjustment, param);
+        for(int each_detail = 0; each_detail < details.objects.size(); each_detail++){
+            int each_detail_x = details.objects[each_detail].x;
+            int each_detail_y = details.objects[each_detail].y;
+            int each_detail_w = details.objects[each_detail].w;
+            int each_detail_h = details.objects[each_detail].h;
+            cv::Rect rect_detail(each_detail_x-each_detail_w/2, each_detail_y-each_detail_h/2, each_detail_w, each_detail_h);
+            cv::Mat crop_detail = cira_std::getROI(after_brightness_adjustment, rect_detail);
+
+            //bubble sort
+            for(int i = 0; i < details.objects.size(); i++) {
+            for(int j = 0; j < details.objects.size()-1; j++) {
+            if(details.objects[j].x > details.objects[j+1].x) {
+                DeepDetectObject tmp = details.objects[j];
+                details.objects[j] = details.objects[j+1];
+                details.objects[j+1] = tmp;
+            }
+            }
+            }
+
+            if(details.objects[each_detail].name == "c"){
+                DeepClassifResult classif_result = cira_std::deepClassifRun("character", crop_detail);
+//                cv::imshow(classif_result.objects[0].name.toStdString(), crop_detail);
+                result.push_back(classif_result.objects[0].name);
+                cv::putText(after_brightness_adjustment, classif_result.objects[0].name.toStdString(), cv::Point(each_detail_x,each_detail_y + std::rand() %100), cv::FONT_HERSHEY_SIMPLEX, fontScale, font_color, font_thickness);
 
 
-        if(name == "a") { is_found_a=true; p_curr[0] = p; }
-        if(name == "b") { is_found_b=true; p_curr[1] = p; }
-        if(name == "c") { is_found_c=true; p_curr[2] = p; }
-        if(name == "d") { is_found_d=true; p_curr[3] = p; }
+            }
+            else if(details.objects[each_detail].name == "p"){
+                DeepClassifResult classif_result = cira_std::deepClassifRun("province", crop_detail);
+//                cv::imshow(classif_result.objects[0].name.toStdString(), crop_detail);
+                result.insert(result.begin(), classif_result.objects[0].name);
+                cv::putText(after_brightness_adjustment, classif_result.objects[0].name.toStdString(), cv::Point(each_detail_x,each_detail_y), cv::FONT_HERSHEY_SIMPLEX, fontScale, font_color, font_thickness);
+            }
+            mat_im = after_brightness_adjustment;
         }
-
-        if(!is_found_a || !is_found_b || !is_found_c || !is_found_d) {
-        isHaveError = true;
-        return;
-        }
-
-        //destination
-        cv::Point2f p_dest[4];
-        p_dest[0] = cv::Point2f(0, 0);
-        p_dest[1] = cv::Point2f(1280, 0);
-        p_dest[2] = cv::Point2f(1280, 720);
-        p_dest[3] = cv::Point2f(0, 720);
-
-        cv::Mat out(cv::Size(1280, 720), CV_8UC3);
-        cv::Mat M = cv::getPerspectiveTransform(p_curr, p_dest);
-        cv::warpPerspective(crop, out, M, out.size());
-
-        DeepDetectResult details = cira_std::deepDetectRun("details", out, param);
-
-
 
     }
-
-
-    jso["msg"] = "Hello World";
-
-
+    jso["license_province"] = result[0];
+    result.pop_front();
+    jso["license_number"] = result;
 
     payload_js_data[name] = jso;
   }
